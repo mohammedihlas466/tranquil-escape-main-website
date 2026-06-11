@@ -1,0 +1,161 @@
+
+/* Site-wide WhatsApp widget (Tranquil Escape) — gold premium style */
+.te-whatsapp-widget {
+  --te-fab-inset: 32px;
+  position: fixed;
+  bottom: calc(var(--te-fab-inset) + env(safe-area-inset-bottom, 0px));
+  right: calc(var(--te-fab-inset) + env(safe-area-inset-right, 0px));
+  left: auto;
+  z-index: 9999;
+  width: auto;
+  max-width: 380px;
+}
+
+.te-whatsapp-widget .live-chat-wrapper---brix {
+  position: relative;
+  bottom: auto;
+  right: auto;
+  max-width: 380px;
+}
+
+.te-whatsapp-widget .live-chat-content---brix {
+  display: none;
+}
+
+.te-whatsapp-widget.is-open .live-chat-content---brix {
+  display: flex;
+}
+
+.te-whatsapp-widget .live-chat-bubbble---brix.whatsapp {
+  background-color: #aa8453;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.14);
+  width: 48px;
+  height: 48px;
+  margin-top: 12px;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.te-whatsapp-widget .live-chat-bubbble---brix.whatsapp:hover {
+  background-color: #967248;
+  transform: scale(0.96) !important;
+}
+
+.te-whatsapp-widget .live-chat-logo---brix {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.te-whatsapp-widget.is-open .live-chat-logo---brix {
+  opacity: 0 !important;
+  transform: scale(0.8) rotate(45deg) !important;
+  pointer-events: none;
+}
+
+.te-whatsapp-widget .live-chat-close-icon---brix {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  position: absolute;
+  opacity: 0 !important;
+  transform: scale(0.8) rotate(45deg) !important;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.te-whatsapp-widget.is-open .live-chat-close-icon---brix {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.te-whatsapp-widget .live-chat-avatar-wrapper---brix {
+  background-color: #aa8453;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(170, 132, 83, 0.25);
+}
+
+.te-whatsapp-widget .live-chat-avatar---brix {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.te-whatsapp-widget .live-chat-button---brix.whatsapp {
+  background-color: #aa8453;
+  box-shadow: 0 6px 18px rgba(170, 132, 83, 0.28);
+}
+
+.te-whatsapp-widget .live-chat-button---brix.whatsapp:hover {
+  background-color: #967248;
+  transform: scale(0.98);
+}
+
+.te-whatsapp-widget .live-chat-bubble-title---brix.whatsapp {
+  color: #2a2520;
+}
+
+.te-whatsapp-widget .live-chat-content-left---brix,
+.te-whatsapp-widget .live-chat-avatar-wrapper---brix {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@media screen and (max-width: 767px) {
+  /*
+   * Mobile FAB: equal inset from bottom + right (20px is the industry
+   * standard for chat widgets — clear of the edge, anchored to the corner).
+   */
+  .te-whatsapp-widget {
+    --te-fab-inset: 20px;
+    max-width: none;
+  }
+
+  /* Open: panel uses slightly wider margins so the card reads comfortably */
+  .te-whatsapp-widget.is-open {
+    --te-fab-inset: 16px;
+    left: calc(16px + env(safe-area-inset-left, 0px));
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .te-whatsapp-widget .live-chat-wrapper---brix {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    max-width: 100%;
+    align-items: flex-end;
+  }
+
+  .te-whatsapp-widget.is-open .live-chat-wrapper---brix {
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  /* Panel spans full width; close FAB stays bottom-right */
+  .te-whatsapp-widget.is-open .live-chat-content---brix {
+    align-self: stretch;
+    width: 100%;
+  }
+
+  .te-whatsapp-widget.is-open .live-chat-content-left---brix {
+    flex: 1;
+    width: 100%;
+  }
+
+  /* One control in the corner — hide duplicate avatar beside the panel */
+  .te-whatsapp-widget .live-chat-content-right---brix {
+    display: none;
+  }
+
+  .te-whatsapp-widget:not(.is-open) .live-chat-bubbble---brix.whatsapp {
+    margin-top: 0;
+  }
+}

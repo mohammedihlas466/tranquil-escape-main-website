@@ -1,0 +1,37 @@
+
+/* Tranquil Escape — mobile-first overrides */
+
+/* Prevent iOS Safari auto-zoom on form focus (requires ≥16px) */
+@media screen and (max-width: 767px) {
+  .w-input,
+  .w-select,
+  textarea.w-input,
+  textarea.w-select {
+    font-size: 16px;
+  }
+}
+
+/* Tablet nav: avoid min-width overflow on narrow viewports */
+@media screen and (max-width: 991px) {
+  .nav-menu-wrapper {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Small phones: fix dropdown offset causing horizontal scroll */
+@media screen and (max-width: 479px) {
+  .dropdown-options {
+    right: auto;
+    left: auto;
+  }
+
+  .footer-copyright .horizontal-left-center._30px-gap {
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px 16px;
+    row-gap: 8px;
+  }
+}
