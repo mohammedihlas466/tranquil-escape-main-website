@@ -1,0 +1,325 @@
+/* ==========================================================================
+   Tranquil Escape — sitewide booking entry points
+   Scoped under .te-nav-* / .te-hero-* / .te-book-cta* only.
+   ========================================================================== */
+
+:root {
+  --te-gold: #aa8453;
+  --te-gold-deep: #7c6038;
+  --te-cream: #f8f5f0;
+  --te-cream-light: #fff9ee;
+  --te-heading: #222222;
+  --te-text: #666666;
+  --te-border: #e6e6e6;
+  --te-white: #ffffff;
+  --te-serif: "Gildadisplay Woff", "Gilda Display", Georgia, "Times New Roman", serif;
+  --te-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- Header CTA -------------------------------------------------------- */
+
+.navbar-wrapper {
+  gap: 12px;
+}
+
+.te-nav-book {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.te-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid var(--te-gold);
+  background: var(--te-gold);
+  color: var(--te-white);
+  font-family: var(--te-serif);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 0.35s var(--te-ease), border-color 0.35s var(--te-ease),
+    color 0.35s var(--te-ease), transform 0.2s var(--te-ease);
+}
+
+.te-nav-cta:hover {
+  background: var(--te-gold-deep);
+  border-color: var(--te-gold-deep);
+  color: var(--te-white);
+}
+
+.te-nav-cta:focus-visible {
+  outline: 2px solid var(--te-gold-deep);
+  outline-offset: 3px;
+}
+
+.te-nav-cta:active {
+  transform: translateY(1px);
+}
+
+.te-nav-cta__short {
+  display: none;
+}
+
+.te-nav-cta--bar {
+  display: none;
+  flex: none;
+  min-height: 40px;
+  padding: 0 14px;
+  margin-right: 8px;
+  letter-spacing: 0.16em;
+}
+
+/* Compact label when the desktop nav is tight */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .te-nav-cta__full {
+    display: none;
+  }
+
+  .te-nav-cta__short {
+    display: inline;
+  }
+
+  .te-nav-cta {
+    min-width: 104px;
+    padding: 0 16px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .te-nav-cta {
+    padding: 0 20px;
+    letter-spacing: 0.14em;
+  }
+}
+
+/* Mobile: Reserve chip beside the menu icon; also list item inside the drawer */
+@media screen and (max-width: 991px) {
+  .navbar-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .te-nav-cta--bar {
+    display: inline-flex;
+    margin-left: auto;
+    margin-right: 6px;
+  }
+
+  .te-nav-book .te-nav-cta {
+    width: 100%;
+    min-height: 48px;
+    margin: 8px 0 4px;
+    background: transparent;
+    border-color: var(--te-gold);
+    color: var(--te-gold-deep);
+  }
+
+  .te-nav-book .te-nav-cta:hover {
+    background: var(--te-gold);
+    border-color: var(--te-gold);
+    color: var(--te-white);
+  }
+
+  .te-nav-book .te-nav-cta__full {
+    display: none;
+  }
+
+  .te-nav-book .te-nav-cta__short {
+    display: inline;
+  }
+}
+
+/* ---- Homepage hero CTAs ------------------------------------------------ */
+
+.button-call-wrapper.te-hero-actions-wrap {
+  overflow: visible;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 18px 24px;
+}
+
+.te-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px 18px;
+}
+
+.te-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  font-family: var(--te-serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.35s var(--te-ease), border-color 0.35s var(--te-ease),
+    color 0.35s var(--te-ease), transform 0.2s var(--te-ease);
+}
+
+.te-hero-cta--primary {
+  border: 1px solid var(--te-gold);
+  background: var(--te-gold);
+  color: var(--te-white);
+}
+
+.te-hero-cta--primary:hover {
+  background: var(--te-gold-deep);
+  border-color: var(--te-gold-deep);
+  color: var(--te-white);
+}
+
+.te-hero-cta--secondary {
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: transparent;
+  color: var(--te-white);
+}
+
+.te-hero-cta--secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--te-white);
+  color: var(--te-white);
+}
+
+.te-hero-cta:focus-visible {
+  outline: 2px solid var(--te-cream-light);
+  outline-offset: 3px;
+}
+
+.te-hero-cta:active {
+  transform: translateY(1px);
+}
+
+@media screen and (max-width: 767px) {
+  .te-hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .te-hero-cta {
+    width: 100%;
+    min-height: 48px;
+    letter-spacing: 0.14em;
+  }
+}
+
+/* ---- Room page booking strip ------------------------------------------- */
+
+.te-book-cta {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 40px 20px;
+  background:
+    linear-gradient(180deg, var(--te-cream-light) 0%, var(--te-cream) 100%);
+  border-bottom: 1px solid var(--te-border);
+  text-align: center;
+}
+
+.te-book-cta *,
+.te-book-cta *::before,
+.te-book-cta *::after {
+  box-sizing: border-box;
+}
+
+.te-book-cta__inner {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.te-book-cta__eyebrow {
+  margin: 0 0 10px;
+  font-family: var(--te-serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--te-gold-deep);
+}
+
+.te-book-cta__title {
+  margin: 0 0 10px;
+  font-family: var(--te-serif);
+  font-size: clamp(1.5rem, 3.5vw, 1.875rem);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--te-heading);
+}
+
+.te-book-cta__text {
+  margin: 0 auto 22px;
+  max-width: 34em;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--te-text);
+}
+
+.te-book-cta__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 28px;
+  border: 1px solid var(--te-gold);
+  background: var(--te-gold);
+  color: var(--te-white);
+  font-family: var(--te-serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.35s var(--te-ease), border-color 0.35s var(--te-ease),
+    transform 0.2s var(--te-ease);
+}
+
+.te-book-cta__button:hover {
+  background: var(--te-gold-deep);
+  border-color: var(--te-gold-deep);
+  color: var(--te-white);
+}
+
+.te-book-cta__button:focus-visible {
+  outline: 2px solid var(--te-gold-deep);
+  outline-offset: 3px;
+}
+
+.te-book-cta__button:active {
+  transform: translateY(1px);
+}
+
+@media screen and (min-width: 768px) {
+  .te-book-cta {
+    padding: 48px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .te-nav-cta,
+  .te-hero-cta,
+  .te-book-cta__button {
+    transition: none;
+  }
+
+  .te-nav-cta:active,
+  .te-hero-cta:active,
+  .te-book-cta__button:active {
+    transform: none;
+  }
+}
