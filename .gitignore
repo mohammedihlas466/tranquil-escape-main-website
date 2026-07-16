@@ -15,6 +15,9 @@ _*.html
 _*.txt
 *.log
 
+# Dependencies (not used by this static site; never commit)
+node_modules/
+
 # Secrets (never commit)
 .env
 .env.*
