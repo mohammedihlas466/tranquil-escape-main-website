@@ -162,6 +162,7 @@ Do **not** create a fake `booking_completed` conversion unless HotelRunner expos
 - Mid-page reserve band after room cards
 - Post-testimonials reserve band
 - Header Reserve removed entirely (logo + menu only); page-level closes remain
+- Quiet **Book** nav link (same style as other menu items) after Services, before Contact — desktop + mobile drawer; links to `/book`
 - Room CTAs: same position on Deluxe + Triple — after Overview/Features, before footer; quieter ghost button
 - Services + Facilities: one matching quiet close band; Contact has no Reserve section
 
