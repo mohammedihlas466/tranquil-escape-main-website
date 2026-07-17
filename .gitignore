@@ -14,6 +14,7 @@ _shots/
 _*.html
 _*.txt
 *.log
+GA4 Measurement ID.txt
 
 # Dependencies (not used by this static site; never commit)
 node_modules/

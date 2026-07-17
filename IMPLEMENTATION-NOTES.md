@@ -136,3 +136,35 @@ assistance styling, and the footer transition all render as intended. The only o
 is the pre-existing global navbar at 1024px, documented above.
 
 _No commit, push, or deploy was performed._
+
+---
+
+## 9. SEO / CRO / Search Ads readiness (feature/seo-cro-ads)
+
+### High-intent Ads landing URL
+Use: **https://tranquilescapevilla.com/book**
+
+Brand/discovery Ads may use the homepage; booking-intent keywords should not.
+
+### GA4 setup (required before paid traffic)
+GA4 Measurement ID is configured in `js/te-analytics.js` as `G-THLJN79RM1`.
+
+Verify in GA4 **DebugView** (or Tag Assistant):
+   - `page_view` (automatic)
+   - `reserve_cta_click`
+   - `whatsapp_click`
+   - `phone_click`
+   - `booking_search_started` (on `/book` when the widget is used)
+
+Do **not** create a fake `booking_completed` conversion unless HotelRunner exposes a real confirmation signal.
+
+### Homepage CRO added
+- Mid-page reserve band after room cards
+- Post-testimonials reserve band
+- Mobile sticky **Reserve Your Stay** bar (clears WhatsApp float)
+
+### SEO hygiene
+- Canonicals on key pages
+- Homepage title/description tuned for Hikkaduwa + reserve intent
+- JSON-LD `Hotel` schema on homepage
+- `/book` intro includes Hikkaduwa + no-online-payment reassurance

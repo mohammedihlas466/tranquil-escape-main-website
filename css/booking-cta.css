@@ -313,13 +313,178 @@
 @media (prefers-reduced-motion: reduce) {
   .te-nav-cta,
   .te-hero-cta,
-  .te-book-cta__button {
+  .te-book-cta__button,
+  .te-home-reserve__button,
+  .te-sticky-reserve__btn {
     transition: none;
   }
 
   .te-nav-cta:active,
   .te-hero-cta:active,
-  .te-book-cta__button:active {
+  .te-book-cta__button:active,
+  .te-home-reserve__button:active,
+  .te-sticky-reserve__btn:active {
     transform: none;
+  }
+}
+
+/* ---- Homepage mid / proof reserve bands -------------------------------- */
+
+.te-home-reserve {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 48px 20px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--te-cream-light) 0%, var(--te-cream) 100%);
+  border-top: 1px solid var(--te-border);
+  border-bottom: 1px solid var(--te-border);
+}
+
+.te-home-reserve *,
+.te-home-reserve *::before,
+.te-home-reserve *::after {
+  box-sizing: border-box;
+}
+
+.te-home-reserve--proof {
+  background: var(--te-cream);
+}
+
+.te-home-reserve__inner {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.te-home-reserve__eyebrow {
+  margin: 0 0 12px;
+  font-family: var(--te-serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--te-gold-deep);
+}
+
+.te-home-reserve__title {
+  margin: 0 0 12px;
+  font-family: var(--te-serif);
+  font-size: clamp(1.5rem, 3.8vw, 2rem);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--te-heading);
+}
+
+.te-home-reserve__text {
+  margin: 0 auto 24px;
+  max-width: 36em;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--te-text);
+}
+
+.te-home-reserve__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border: 1px solid var(--te-gold);
+  background: var(--te-gold);
+  color: var(--te-white);
+  font-family: var(--te-serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.35s var(--te-ease), border-color 0.35s var(--te-ease),
+    transform 0.2s var(--te-ease);
+}
+
+.te-home-reserve__button:hover {
+  background: var(--te-gold-deep);
+  border-color: var(--te-gold-deep);
+  color: var(--te-white);
+}
+
+.te-home-reserve__button:focus-visible {
+  outline: 2px solid var(--te-gold-deep);
+  outline-offset: 3px;
+}
+
+.te-home-reserve__button:active {
+  transform: translateY(1px);
+}
+
+@media screen and (min-width: 768px) {
+  .te-home-reserve {
+    padding: 64px 24px;
+  }
+}
+
+/* ---- Mobile sticky Reserve bar ----------------------------------------- */
+
+.te-sticky-reserve {
+  display: none;
+}
+
+@media screen and (max-width: 991px) {
+  .te-sticky-reserve {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    padding-right: 88px; /* clear WhatsApp float */
+    background: linear-gradient(180deg, rgba(248, 245, 240, 0) 0%, rgba(248, 245, 240, 0.96) 28%, var(--te-cream) 100%);
+    pointer-events: none;
+  }
+
+  .te-sticky-reserve__btn {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 0 18px;
+    border: 1px solid var(--te-gold);
+    background: var(--te-gold);
+    color: var(--te-white);
+    font-family: var(--te-serif);
+    font-size: 0.8125rem;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 0 8px 24px rgba(34, 34, 34, 0.12);
+  }
+
+  .te-sticky-reserve__btn:hover,
+  .te-sticky-reserve__btn:focus-visible {
+    background: var(--te-gold-deep);
+    border-color: var(--te-gold-deep);
+    color: var(--te-white);
+  }
+
+  .te-sticky-reserve__btn:focus-visible {
+    outline: 2px solid var(--te-gold-deep);
+    outline-offset: 2px;
+  }
+
+  body.te-has-sticky-reserve {
+    padding-bottom: 88px;
+  }
+
+  /* Keep WhatsApp above sticky bar visually */
+  body.te-has-sticky-reserve .te-whatsapp-widget {
+    bottom: 76px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .te-sticky-reserve {
+    display: none !important;
   }
 }
