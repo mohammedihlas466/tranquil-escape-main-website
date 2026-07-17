@@ -161,7 +161,9 @@ Do **not** create a fake `booking_completed` conversion unless HotelRunner expos
 ### Homepage CRO added
 - Mid-page reserve band after room cards
 - Post-testimonials reserve band
-- Mobile sticky **Reserve Your Stay** bar (clears WhatsApp float)
+- Header Reserve removed entirely (logo + menu only); page-level closes remain
+- Room CTAs: same position on Deluxe + Triple — after Overview/Features, before footer; quieter ghost button
+- Services + Facilities: one matching quiet close band; Contact has no Reserve section
 
 ### SEO hygiene
 - Canonicals on key pages

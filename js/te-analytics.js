@@ -76,17 +76,15 @@
         var href = (a.getAttribute("href") || "").trim();
         var location =
           a.getAttribute("data-te-location") ||
-          (a.classList.contains("te-nav-cta")
-            ? "nav"
-            : a.classList.contains("te-hero-cta")
-              ? "hero"
-              : a.classList.contains("te-book-cta__button")
-                ? "room_strip"
-                : a.classList.contains("te-sticky-reserve__btn")
-                  ? "sticky"
-                  : a.classList.contains("footer-text-link")
-                    ? "footer"
-                    : "link");
+          (a.classList.contains("te-hero-cta")
+            ? "hero"
+            : a.classList.contains("te-book-cta__button")
+              ? "room_strip"
+              : a.classList.contains("te-home-reserve__button")
+                ? "home_band"
+                : a.classList.contains("footer-text-link")
+                  ? "footer"
+                  : "link");
 
         if (
           href === "/book" ||
