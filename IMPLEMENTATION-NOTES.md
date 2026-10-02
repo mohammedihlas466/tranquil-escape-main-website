@@ -24,16 +24,15 @@ replaced by a link to the Little Hotelier engine (see section 10).
   scoped and cannot leak to other pages.
 - **Intro:** eyebrow copy set to `Direct Reservations`; removed the duplicated
   `Reserve Your Stay` H2 that competed with the hero H1; supporting line set to
-  `Check live availability and plan your stay at Tranquil Escape.`
+  `Check live availability and book your stay at Tranquil Escape in Hikkaduwa.`
 - **Booking shell:** wrapped the heading + trust row + booking button + payment notice in a single
   card (`.te-booking__shell`) with one clear section heading `Plan your stay`
   (`id="booking-page-heading"`, which the section's `aria-labelledby` points to).
 - **Trust row:** converted the plain text spans into a semantic `<ul>` with inline gold
   check icons (`Live Availability`, `Direct Reservation`, `Booking Assistance`).
 - **Payment notice:** presented as a calm reassurance callout (info icon + gold left rule),
-  not an error style. Copy now reads: "Check live availability and book your stay at Tranquil
-  Escape in Hikkaduwa. You will see the full price, cancellation terms and payment details
-  before you confirm." No cancellation or payment policy is stated on the page.
+  not an error style. Copy now reads: "You will see the full price, cancellation terms and
+  payment details before you confirm." No cancellation or payment policy is stated on the page.
 - **Assistance:** heading `Prefer personal assistance?`; added supporting line
   `Our team is available to help with dates, room options and arrival arrangements.`;
   converted the two links into tappable action cards with icon + action label + number
@@ -191,8 +190,9 @@ with the approved embed, and re-check analytics (an embedded cross-origin frame 
 in-frame activity from the page).
 
 - `book.html`: LH link wrapped in `LITTLEHOTELIER_LINK_START/END`, inside `.te-booking__widget-wrap`
-  (same tab, `data-te-location="book_fallback"`); lead text and notice replaced with copy that
-  states no payment or cancellation policy; added "Booking the whole villa for a group?
+  (same tab, `data-te-location="book_fallback"`); lead text ("Check live availability and book
+  your stay...") and notice ("You will see the full price, cancellation terms and payment details
+  before you confirm.") replaced with copy that states no payment or cancellation policy; added "Booking the whole villa for a group?
   Whole-villa stays are arranged on WhatsApp." under the assistance text. WhatsApp and phone links
   unchanged.
 - `index.html`: homepage reserve band no longer claims "without an online payment".
