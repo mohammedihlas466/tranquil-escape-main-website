@@ -126,10 +126,12 @@
     );
   }
 
-  // booking_search_started is intentionally not tracked. The Little Hotelier
-  // "Check availability" widget is a cross-origin iframe, so clicks and form
-  // changes inside it never reach this page. The only booking-engine signal
-  // available here is a click on a link to the engine (booking_engine_click).
+  // booking_search_started is intentionally not tracked. /book is link-only:
+  // guests search on the Little Hotelier engine, a different origin, so their
+  // clicks and form changes never reach this page. The only booking-engine
+  // signal available here is a click on a link to the engine
+  // (booking_engine_click). Revisit if an embedded engine is added later; a
+  // cross-origin iframe would still hide in-frame activity from this page.
 
   loadGa4();
   if (document.readyState === "loading") {

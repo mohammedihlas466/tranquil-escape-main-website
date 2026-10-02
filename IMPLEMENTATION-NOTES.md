@@ -17,15 +17,15 @@ No other files were touched. No frameworks or build steps were introduced.
 
 ### `book.html`
 All edits are confined to the `<body>` open tag and the `.te-booking` section. The
-global navbar, footer and WhatsApp float were left intact. The booking widget block was later
-replaced by the Little Hotelier iframe (see section 10).
+global navbar, footer and WhatsApp float were left intact. The booking widget was later
+replaced by a link to the Little Hotelier engine (see section 10).
 
 - Added a page-owned root hook: `<body class="booking-page">` so every new rule can be
   scoped and cannot leak to other pages.
 - **Intro:** eyebrow copy set to `Direct Reservations`; removed the duplicated
   `Reserve Your Stay` H2 that competed with the hero H1; supporting line set to
   `Check live availability and plan your stay at Tranquil Escape.`
-- **Booking shell:** wrapped the heading + trust row + widget + payment notice in a single
+- **Booking shell:** wrapped the heading + trust row + booking button + payment notice in a single
   card (`.te-booking__shell`) with one clear section heading `Plan your stay`
   (`id="booking-page-heading"`, which the section's `aria-labelledby` points to).
 - **Trust row:** converted the plain text spans into a semantic `<ul>` with inline gold
@@ -51,8 +51,8 @@ Complete rewrite of the booking-page styles. Highlights:
   48px+ tap targets with hover / active / focus-visible states.
 - Increased desktop scale (wider inner column, larger card padding) so the booking content no
   longer looks underscaled on large screens.
-- Reserved the widget area height (`min-height`) to prevent layout shift while the external
-  iframe loads (now 264px: 200px iframe + 16px gap + 48px fallback button).
+- The booking area is a single centred primary button, so it needs no reserved height and
+  causes no layout shift.
 - Added mobile gutters (16–20px) and extra bottom padding so the floating WhatsApp button
   never overlaps the assistance cards.
 
@@ -66,8 +66,8 @@ Complete rewrite of the booking-page styles. Highlights:
   a white booking card, and gold reserved for the top rule, icons, and small accents.
 - **Trust without false claims.** Only the three permitted trust points are shown. No
   "Best Rate", "Secure Payment", "Instant Confirmation", or "Free Cancellation" language.
-- **The widget is the hero of the card.** The card frames the Little Hotelier availability
-  widget and gives it room; supporting content sits below it.
+- **The booking button is the hero of the card.** The card frames one solid "Check availability
+  and rates" button linking to the Little Hotelier engine; supporting content sits below it.
 - **Assistance as clear affordances.** Two bordered action cards with circular icon chips read
   as buttons and clearly separate the primary action label from the phone number.
 
@@ -98,14 +98,13 @@ Complete rewrite of the booking-page styles. Highlights:
   - Hero white title over the gradient scrim + text-shadow is high-contrast on the darkened side.
 - **Reduced motion:** hover/active transitions are disabled under `prefers-reduced-motion`.
 
-## 5. Little Hotelier widget integrity
+## 5. Little Hotelier link
 
-- The iframe between `<!-- LITTLEHOTELIER_WIDGET_START -->` and
-  `<!-- LITTLEHOTELIER_WIDGET_END -->` in `book.html` is the vendor-supplied snippet, unmodified:
-  `https://book-directonline.com/properties/tranquilescape/booking_widget`
-  (`height="200" width="250"`, no scrolling).
-- Engine URL (also used by the fallback link): `https://book-directonline.com/properties/tranquilescape`.
-  Region APAC, channel code `tranquilescape`.
+- The booking link in `book.html` sits between `<!-- LITTLEHOTELIER_LINK_START -->` and
+  `<!-- LITTLEHOTELIER_LINK_END -->`. Swap that block when the embedded engine is approved.
+- Engine URL: `https://book-directonline.com/properties/tranquilescape`.
+  Region APAC, channel code `tranquilescape`. The link opens in the same tab and keeps
+  `data-te-location="book_fallback"` so analytics stays comparable.
 
 ## 6. Vendor / shared-CSS limitations
 
@@ -117,8 +116,9 @@ Complete rewrite of the booking-page styles. Highlights:
   without editing the shared `webflow-style.css` and/or the Webflow nav breakpoint, both of which
   are outside the permitted file list, and the brief requires preserving header scale/behavior.
   The booking section itself reports **0px** horizontal overflow at every required viewport.
-- **The widget is a cross-origin iframe.** The page cannot style, resize or observe anything
-  inside it. It only sizes the container; the widget's internals are owned by Little Hotelier.
+- **The Little Hotelier iframe widget cannot be embedded.** Its frame headers
+  (`X-Frame-Options: SAMEORIGIN`, `Content-Security-Policy: frame-ancestors 'self'`) make browsers
+  refuse to show it on any other site, so it was removed and `/book` is link-only for now.
 
 ## 7. `!important` usage
 
@@ -151,11 +151,11 @@ Verify in GA4 **DebugView** (or Tag Assistant):
    - `reserve_cta_click`
    - `whatsapp_click`
    - `phone_click`
-   - `booking_engine_click` (any link to `book-directonline.com`, e.g. the `/book` fallback
-     button with `cta_location = book_fallback`)
+   - `booking_engine_click` (any link to `book-directonline.com`, e.g. the `/book` button with
+     `cta_location = book_fallback`)
 
-`booking_search_started` was removed: clicks inside the cross-origin Little Hotelier iframe
-cannot be seen by the page.
+`booking_search_started` was removed: searches happen on the Little Hotelier site, which the
+page cannot observe.
 
 Do **not** create a fake `booking_completed` conversion unless Little Hotelier exposes a real confirmation signal.
 
@@ -178,19 +178,27 @@ Do **not** create a fake `booking_completed` conversion unless Little Hotelier e
 
 ## 10. Little Hotelier booking engine (feature/little-hotelier-booking), Phase A
 
-Replaces the previous booking widget on `/book` with Little Hotelier. Phase A is the iframe
-"Check availability" widget only; LH has not yet approved this domain for the full embedded engine.
+Replaces the previous booking widget on `/book` with Little Hotelier.
 
-- `book.html`: widget block swapped for the LH iframe (markers `LITTLEHOTELIER_WIDGET_START/END`),
-  centred in `.te-booking__widget-wrap`; added a plain "View all rooms and rates" link to the LH
-  engine (same tab, `data-te-location="book_fallback"`); lead text and notice replaced; added
-  "Booking the whole villa for a group? Whole-villa stays are arranged on WhatsApp." under the
-  assistance text. WhatsApp and phone links unchanged.
+**Phase A (current): link-only.** Little Hotelier's iframe "Check availability" widget is blocked
+by its own frame headers (`X-Frame-Options: SAMEORIGIN`, `frame-ancestors 'self'`), so the page
+does not embed it. `/book` has one primary button, "Check availability and rates", that opens the
+LH engine in the same tab.
+
+**Phase B (later): embedded engine.** Once LH approves this domain for the embedded engine,
+replace the block between `LITTLEHOTELIER_LINK_START` and `LITTLEHOTELIER_LINK_END` in `book.html`
+with the approved embed, and re-check analytics (an embedded cross-origin frame still hides
+in-frame activity from the page).
+
+- `book.html`: LH link wrapped in `LITTLEHOTELIER_LINK_START/END`, inside `.te-booking__widget-wrap`
+  (same tab, `data-te-location="book_fallback"`); lead text and notice replaced with copy that
+  states no payment or cancellation policy; added "Booking the whole villa for a group?
+  Whole-villa stays are arranged on WhatsApp." under the assistance text. WhatsApp and phone links
+  unchanged.
 - `index.html`: homepage reserve band no longer claims "without an online payment".
 - `js/te-analytics.js`: added `booking_engine_click`; removed `booking_search_started`.
-- `css/booking-page.css`: widget wrapper `min-height` resized to 264px, fallback link and
-  assistance-note styles added, unused vendor selectors removed.
+- `css/booking-page.css`: `.te-booking__cta` solid deep-gold button (hover, focus-visible, 52px
+  tall), centred; assistance-note style added; unused vendor and iframe rules removed.
 - Removed the old widget backup files from the repo root.
 - Not changed: `terms-and-conditions.html` carries its own payment, deposit and cancellation
   wording. It was left untouched and should be reviewed against the LH rate plans.
-- Phase B (full embedded engine) is blocked until LH approves the domain.
