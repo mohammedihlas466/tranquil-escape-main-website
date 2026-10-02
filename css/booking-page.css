@@ -23,7 +23,6 @@
   z-index: 1;
   box-sizing: border-box;
   width: 100%;
-  /* visible so HotelRunner's absolute .datepicker is not clipped */
   overflow-x: visible;
   margin: 0;
   padding: 44px 20px 72px;
@@ -131,71 +130,63 @@
   color: var(--te-gold-deep);
 }
 
-/* ---- HotelRunner widget (dominant functional element) ----------------- */
+/* ---- Availability widget (dominant functional element) ----------------- */
 
+/*
+  Reserved height = 200px iframe + 16px gap + 48px fallback button, so the
+  card never gaps or shifts while the cross-origin iframe loads.
+*/
 .booking-page .te-booking__widget-wrap {
   position: relative;
   z-index: 2;
-  min-height: 132px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-height: 264px;
   margin: 0;
   padding: 0;
-  overflow: visible;
 }
 
-.booking-page #hr_search_widget {
-  width: 100%;
-  min-width: 0;
+.booking-page .te-booking__widget-wrap iframe {
+  display: block;
+  flex: none;
   max-width: 100%;
-  overflow: visible;
+  border: 0;
 }
 
-/* Do not constrain tables — HotelRunner month grids are floated tables. */
-.booking-page .te-booking__widget-wrap iframe,
-.booking-page .te-booking__widget-wrap form,
-.booking-page .te-booking__widget-wrap input,
-.booking-page .te-booking__widget-wrap select,
-.booking-page .te-booking__widget-wrap button {
-  max-width: 100%;
+/* ---- Fallback link to the full engine (quiet, outlined) ----------------- */
+
+.booking-page .te-booking__fallback {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 28px;
+  border: 1px solid var(--te-gold);
+  background: transparent;
+  font-family: var(--te-serif);
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--te-gold-deep);
+  transition: background-color 0.3s var(--te-ease), border-color 0.3s var(--te-ease),
+    color 0.3s var(--te-ease);
 }
 
-/* Calendar popup: sit above card/notice; do not shrink month tables. */
-.booking-page .datepicker {
-  z-index: 40;
-  max-width: 555px;
+.booking-page .te-booking__fallback:hover {
+  border-color: var(--te-gold);
+  background: var(--te-gold);
+  color: var(--te-white);
 }
 
-.booking-page .datepicker__month {
-  max-width: none;
-}
-
-/*
-  Desktop only: HotelRunner sets .datepicker { width: 100% } of the date
-  column. On the horizontal search bar that column is too narrow for two
-  240px months, so month2 wraps underneath. Lock the popup width and use
-  flex so both months sit on one row. Mobile/iPad left to vendor CSS.
-*/
-@media screen and (min-width: 992px) {
-  .booking-page .datepicker {
-    width: 555px !important;
-    min-width: 555px;
-  }
-
-  .booking-page .datepicker__months {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    justify-content: space-between;
-    overflow: hidden;
-  }
-
-  .booking-page .datepicker__month,
-  .booking-page .datepicker__month--month1,
-  .booking-page .datepicker__month--month2 {
-    float: none;
-    width: 240px;
-    flex: 0 0 240px;
-    display: table;
-  }
+.booking-page .te-booking__fallback:active {
+  border-color: var(--te-gold-deep);
+  background: var(--te-gold-deep);
+  color: var(--te-white);
 }
 
 /* ---- Payment notice (reassurance, not an error) ----------------------- */
@@ -244,6 +235,14 @@
 }
 
 .booking-page .te-booking__assist-text {
+  margin: 0 auto 8px;
+  max-width: 32em;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--te-text);
+}
+
+.booking-page .te-booking__assist-note {
   margin: 0 auto 22px;
   max-width: 32em;
   font-size: 1rem;
@@ -463,7 +462,8 @@
 
 /* Respect reduced motion. */
 @media (prefers-reduced-motion: reduce) {
-  .booking-page .te-booking__assist-link {
+  .booking-page .te-booking__assist-link,
+  .booking-page .te-booking__fallback {
     transition: none;
   }
 

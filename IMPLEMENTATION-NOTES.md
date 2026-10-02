@@ -17,7 +17,8 @@ No other files were touched. No frameworks or build steps were introduced.
 
 ### `book.html`
 All edits are confined to the `<body>` open tag and the `.te-booking` section. The
-global navbar, footer, WhatsApp float, and the HotelRunner widget block were left intact.
+global navbar, footer and WhatsApp float were left intact. The booking widget block was later
+replaced by the Little Hotelier iframe (see section 10).
 
 - Added a page-owned root hook: `<body class="booking-page">` so every new rule can be
   scoped and cannot leak to other pages.
@@ -29,8 +30,10 @@ global navbar, footer, WhatsApp float, and the HotelRunner widget block were lef
   (`id="booking-page-heading"`, which the section's `aria-labelledby` points to).
 - **Trust row:** converted the plain text spans into a semantic `<ul>` with inline gold
   check icons (`Live Availability`, `Direct Reservation`, `Booking Assistance`).
-- **Payment notice:** kept the exact required copy; presented as a calm reassurance callout
-  (info icon + gold left rule), not an error style.
+- **Payment notice:** presented as a calm reassurance callout (info icon + gold left rule),
+  not an error style. Copy now reads: "Check live availability and book your stay at Tranquil
+  Escape in Hikkaduwa. You will see the full price, cancellation terms and payment details
+  before you confirm." No cancellation or payment policy is stated on the page.
 - **Assistance:** heading `Prefer personal assistance?`; added supporting line
   `Our team is available to help with dates, room options and arrival arrangements.`;
   converted the two links into tappable action cards with icon + action label + number
@@ -48,8 +51,8 @@ Complete rewrite of the booking-page styles. Highlights:
   48px+ tap targets with hover / active / focus-visible states.
 - Increased desktop scale (wider inner column, larger card padding) so the booking content no
   longer looks underscaled on large screens.
-- Reserved the HotelRunner widget height (`min-height`) to prevent layout shift while the
-  external script loads.
+- Reserved the widget area height (`min-height`) to prevent layout shift while the external
+  iframe loads (now 264px: 200px iframe + 16px gap + 48px fallback button).
 - Added mobile gutters (16–20px) and extra bottom padding so the floating WhatsApp button
   never overlaps the assistance cards.
 
@@ -63,8 +66,8 @@ Complete rewrite of the booking-page styles. Highlights:
   a white booking card, and gold reserved for the top rule, icons, and small accents.
 - **Trust without false claims.** Only the three permitted trust points are shown. No
   "Best Rate", "Secure Payment", "Instant Confirmation", or "Free Cancellation" language.
-- **The widget is the hero of the card.** The card frames the HotelRunner search widget and
-  gives it room; supporting content sits below it.
+- **The widget is the hero of the card.** The card frames the Little Hotelier availability
+  widget and gives it room; supporting content sits below it.
 - **Assistance as clear affordances.** Two bordered action cards with circular icon chips read
   as buttons and clearly separate the primary action label from the phone number.
 
@@ -95,14 +98,14 @@ Complete rewrite of the booking-page styles. Highlights:
   - Hero white title over the gradient scrim + text-shadow is high-contrast on the darkened side.
 - **Reduced motion:** hover/active transitions are disabled under `prefers-reduced-motion`.
 
-## 5. HotelRunner integrity verification
+## 5. Little Hotelier widget integrity
 
-- The generated snippet between `<!-- HOTELRUNNER_SEARCH_WIDGET_START -->` and
-  `<!-- HOTELRUNNER_SEARCH_WIDGET_END -->` was **not modified, reformatted, or substituted**.
-- Confirmed the snippet still contains all required tokens: `hr_search_widget`,
-  `hr_widget_script`, and `c746ed0291968033cdab`.
-- Confirmed the original `hotelrunner-widget-original.txt` content is contained, unchanged,
-  inside `book.html`.
+- The iframe between `<!-- LITTLEHOTELIER_WIDGET_START -->` and
+  `<!-- LITTLEHOTELIER_WIDGET_END -->` in `book.html` is the vendor-supplied snippet, unmodified:
+  `https://book-directonline.com/properties/tranquilescape/booking_widget`
+  (`height="200" width="250"`, no scrolling).
+- Engine URL (also used by the fallback link): `https://book-directonline.com/properties/tranquilescape`.
+  Region APAC, channel code `tranquilescape`.
 
 ## 6. Vendor / shared-CSS limitations
 
@@ -114,16 +117,12 @@ Complete rewrite of the booking-page styles. Highlights:
   without editing the shared `webflow-style.css` and/or the Webflow nav breakpoint, both of which
   are outside the permitted file list, and the brief requires preserving header scale/behavior.
   The booking section itself reports **0px** horizontal overflow at every required viewport.
-- **HotelRunner widget cannot render in the offline QA sandbox.** The widget loads an external
-  script from `tranquil-escape.hotelrunner.com`, which is unreachable in the local render
-  environment, so the widget area appears empty in the screenshots. Its height is reserved via
-  `min-height` so there is no layout shift; on the live domain the widget fills this space.
-- Styling of the HotelRunner widget internals is owned by the vendor's own CSS
-  (`shared.booknow.css`, `search_widget.css`); the page only sizes its container.
+- **The widget is a cross-origin iframe.** The page cannot style, resize or observe anything
+  inside it. It only sizes the container; the widget's internals are owned by Little Hotelier.
 
 ## 7. `!important` usage
 
-- **None.** No `!important` declarations were added anywhere in `css/booking-page.css`.
+- **None.** `css/booking-page.css` contains no `!important` declarations.
 
 ## 8. Visual QA confirmation
 
@@ -134,8 +133,6 @@ inspected**, and DOM overflow was measured programmatically. Findings: the booki
 no horizontal overflow at any viewport; hero contrast, hierarchy, spacing rhythm, trust/notice/
 assistance styling, and the footer transition all render as intended. The only overflow observed
 is the pre-existing global navbar at 1024px, documented above.
-
-_No commit, push, or deploy was performed._
 
 ---
 
@@ -154,9 +151,13 @@ Verify in GA4 **DebugView** (or Tag Assistant):
    - `reserve_cta_click`
    - `whatsapp_click`
    - `phone_click`
-   - `booking_search_started` (on `/book` when the widget is used)
+   - `booking_engine_click` (any link to `book-directonline.com`, e.g. the `/book` fallback
+     button with `cta_location = book_fallback`)
 
-Do **not** create a fake `booking_completed` conversion unless HotelRunner exposes a real confirmation signal.
+`booking_search_started` was removed: clicks inside the cross-origin Little Hotelier iframe
+cannot be seen by the page.
+
+Do **not** create a fake `booking_completed` conversion unless Little Hotelier exposes a real confirmation signal.
 
 ### Homepage CRO added
 - Mid-page reserve band after room cards
@@ -170,4 +171,26 @@ Do **not** create a fake `booking_completed` conversion unless HotelRunner expos
 - Canonicals on key pages
 - Homepage title/description tuned for Hikkaduwa + reserve intent
 - JSON-LD `Hotel` schema on homepage
-- `/book` intro includes Hikkaduwa + no-online-payment reassurance
+- `/book` intro includes Hikkaduwa + a note that price, cancellation terms and payment details
+  are shown before the guest confirms
+
+---
+
+## 10. Little Hotelier booking engine (feature/little-hotelier-booking), Phase A
+
+Replaces the previous booking widget on `/book` with Little Hotelier. Phase A is the iframe
+"Check availability" widget only; LH has not yet approved this domain for the full embedded engine.
+
+- `book.html`: widget block swapped for the LH iframe (markers `LITTLEHOTELIER_WIDGET_START/END`),
+  centred in `.te-booking__widget-wrap`; added a plain "View all rooms and rates" link to the LH
+  engine (same tab, `data-te-location="book_fallback"`); lead text and notice replaced; added
+  "Booking the whole villa for a group? Whole-villa stays are arranged on WhatsApp." under the
+  assistance text. WhatsApp and phone links unchanged.
+- `index.html`: homepage reserve band no longer claims "without an online payment".
+- `js/te-analytics.js`: added `booking_engine_click`; removed `booking_search_started`.
+- `css/booking-page.css`: widget wrapper `min-height` resized to 264px, fallback link and
+  assistance-note styles added, unused vendor selectors removed.
+- Removed the old widget backup files from the repo root.
+- Not changed: `terms-and-conditions.html` carries its own payment, deposit and cancellation
+  wording. It was left untouched and should be reviewed against the LH rate plans.
+- Phase B (full embedded engine) is blocked until LH approves the domain.

@@ -4,8 +4,8 @@
  * SETUP: Set your GA4 Measurement ID below (Admin → Data streams → Measurement ID).
  * High-intent Google Search Ads should land on: https://tranquilescapevilla.com/book
  *
- * Events: reserve_cta_click, whatsapp_click, phone_click, booking_search_started
- * Do not invent booking_completed unless HotelRunner exposes a verifiable confirmation signal.
+ * Events: reserve_cta_click, whatsapp_click, phone_click, booking_engine_click
+ * Do not invent booking_completed unless Little Hotelier exposes a verifiable confirmation signal.
  */
 (function () {
   "use strict";
@@ -16,8 +16,6 @@
   var TE_GA4_MEASUREMENT_ID = (
     window.TE_GA4_MEASUREMENT_ID || "G-THLJN79RM1"
   ).trim();
-
-  var ADS_LANDING_PATH = "/book";
 
   function hasGa4Id() {
     return /^G-[A-Z0-9]+$/i.test(TE_GA4_MEASUREMENT_ID);
@@ -100,6 +98,15 @@
           return;
         }
 
+        if (href.indexOf("book-directonline.com") !== -1) {
+          track("booking_engine_click", {
+            link_url: href,
+            cta_location: location,
+            page_path: window.location.pathname,
+          });
+          return;
+        }
+
         if (href.indexOf("wa.me/") !== -1 || href.indexOf("whatsapp.com") !== -1) {
           track("whatsapp_click", {
             link_url: href,
@@ -119,53 +126,15 @@
     );
   }
 
-  function bindBookingSearch() {
-    var path = window.location.pathname || "";
-    if (path.indexOf("book") === -1) return;
-
-    var fired = false;
-    function fireSearch() {
-      if (fired) return;
-      fired = true;
-      track("booking_search_started", {
-        page_path: path,
-        ads_landing: ADS_LANDING_PATH,
-      });
-    }
-
-    document.addEventListener(
-      "click",
-      function (e) {
-        var t = e.target;
-        if (!t || !t.closest) return;
-        if (t.closest("#hr_search_widget, .datepicker, .hr_button, .te-booking__widget-wrap")) {
-          fireSearch();
-        }
-      },
-      true
-    );
-
-    document.addEventListener(
-      "change",
-      function (e) {
-        var t = e.target;
-        if (!t) return;
-        if (t.closest && t.closest("#hr_search_widget, .te-booking__widget-wrap")) {
-          fireSearch();
-        }
-      },
-      true
-    );
-  }
+  // booking_search_started is intentionally not tracked. The Little Hotelier
+  // "Check availability" widget is a cross-origin iframe, so clicks and form
+  // changes inside it never reach this page. The only booking-engine signal
+  // available here is a click on a link to the engine (booking_engine_click).
 
   loadGa4();
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function () {
-      bindClicks();
-      bindBookingSearch();
-    });
+    document.addEventListener("DOMContentLoaded", bindClicks);
   } else {
     bindClicks();
-    bindBookingSearch();
   }
 })();
